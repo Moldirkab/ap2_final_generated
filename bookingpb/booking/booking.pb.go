@@ -451,7 +451,7 @@ const file_booking_booking_proto_rawDesc = "" +
 	"\x0fCompleteBooking\x12\x1f.booking.CompleteBookingRequest\x1a\x18.booking.BookingResponse\x12B\n" +
 	"\n" +
 	"GetBooking\x12\x1a.booking.GetBookingRequest\x1a\x18.booking.BookingResponse\x12S\n" +
-	"\x10ListUserBookings\x12 .booking.ListUserBookingsRequest\x1a\x1d.booking.ListBookingsResponseB:Z8github.com/Moldirkab/ap2_final_proto/bookingpb;bookingpbb\x06proto3"
+	"\x10ListUserBookings\x12 .booking.ListUserBookingsRequest\x1a\x1d.booking.ListBookingsResponseB>Z<github.com/Moldirkab/ap2_final_generated/bookingpb;bookingpbb\x06proto3"
 
 var (
 	file_booking_booking_proto_rawDescOnce sync.Once
