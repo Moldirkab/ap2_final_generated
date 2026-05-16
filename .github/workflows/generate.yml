@@ -1,18 +1,16 @@
 name: Generate Go Proto Code
-
 on:
   workflow_dispatch:
   push:
     branches:
       - main
-
 permissions:
   contents: write
-
 jobs:
   generate:
     runs-on: ubuntu-latest
-
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout generated repo
         uses: actions/checkout@v4
@@ -38,14 +36,12 @@ jobs:
         run: |
           go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
           go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
 
       - name: Generate booking Go files
         run: |
-          export PATH="$PATH:$(go env GOPATH)/bin"
-
           rm -rf bookingpb
           mkdir -p bookingpb
-
           protoc \
             --proto_path=proto-source/booking \
             --go_out=bookingpb \
@@ -54,10 +50,20 @@ jobs:
             --go-grpc_opt=paths=source_relative \
             booking.proto
 
+      - name: Create go.mod
+        run: |
+          cat > go.mod << 'EOF'
+          module github.com/Moldirkab/ap2_final_generated
+
+          go 1.21
+          EOF
+          go mod tidy
+
       - name: Commit and push generated code
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          rm -rf proto-source
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Generate booking protobuf code" || echo "No changes to commit"
+          git diff --cached --quiet || git commit -m "Generate booking protobuf Go files"
           git push
