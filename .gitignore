@@ -1,2 +1,9 @@
 proto-source/
 bookingpb/
+.DS_Store
+.idea
+.env
+*.exe
+*.test
+*.out
+vendor/
